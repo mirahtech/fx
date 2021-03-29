@@ -21,6 +21,7 @@ module Fx
           LEFT JOIN pg_aggregate pa
               ON pa.aggfnoid = pp.oid
           WHERE pn.nspname = 'public' AND NOT pp.proisagg AND pd.objid IS NULL
+              AND pp.prokind = 'f'
               AND pa.aggfnoid IS NULL
           ORDER BY pp.oid;
         EOS
