@@ -30,6 +30,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "ammeter", '>= 1.1.3'
   spec.add_development_dependency "yard"
   spec.add_development_dependency "redcarpet"
+  spec.add_development_dependency "bigdecimal"
+  spec.add_development_dependency "json_pure"
 
   spec.add_dependency "activerecord", '>= 4.0.0'
   spec.add_dependency "railties", '>= 4.0.0'
