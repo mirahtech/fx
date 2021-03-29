@@ -125,10 +125,12 @@ module Fx
       #
       # @return [void]
       def drop_function(name)
-        if support_drop_function_without_args
-          execute "DROP FUNCTION #{name};"
-        else
-          execute "DROP FUNCTION #{name}();"
+        fns = functions.select { |function| function.name == name.to_s }
+        fns.each do |function|
+          if support_drop_function_without_args
+            execute "DROP FUNCTION #{name};"
+          else
+            execute "DROP FUNCTION #{name}();"
         end
       end
 
