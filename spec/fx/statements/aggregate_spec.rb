@@ -1,35 +1,35 @@
 require "spec_helper"
-require "fx/statements/function"
+require "fx/statements/aggregate"
 
-describe Fx::Statements::Function, :db do
-  describe "#create_function" do
-    it "creates a function from a file" do
+describe Fx::Statements::Aggregate, :db do
+  describe "#create_aggregate" do
+    it "creates a aggregate from a file" do
       database = stubbed_database
       definition = stubbed_definition
 
-      connection.create_function(:test, {version: 1})
+      connection.create_aggregate(:test)
 
-      expect(database).to have_received(:create_function).
+      expect(database).to have_received(:create_aggregate).
         with(definition.to_sql)
       expect(Fx::Definition).to have_received(:new).
-        with(name: :test, version: 1)
+        with(name: :test, version: 1, type: "aggregate")
     end
 
-    it "allows creating a function with a specific version" do
+    it "allows creating a aggregate with a specific version" do
       database = stubbed_database
       definition = stubbed_definition
 
-      connection.create_function(:test, {version: 2})
+      connection.create_aggregate(:test, version: 2)
 
-      expect(database).to have_received(:create_function).
+      expect(database).to have_received(:create_aggregate).
         with(definition.to_sql)
       expect(Fx::Definition).to have_received(:new).
-        with(name: :test, version: 2)
+        with(name: :test, version: 2, type: "aggregate")
     end
 
     it "raises an error if both arguments are nil" do
       expect {
-        connection.create_function(
+        connection.create_aggregate(
           :whatever,
           version: nil,
           sql_definition: nil,
@@ -41,35 +41,35 @@ describe Fx::Statements::Function, :db do
     end
   end
 
-  describe "#drop_function" do
-    it "drops the function" do
+  describe "#drop_aggregate" do
+    it "drops the aggregate" do
       database = stubbed_database
 
-      connection.drop_function(:test)
+      connection.drop_aggregate(:test)
 
-      expect(database).to have_received(:drop_function).with(:test)
+      expect(database).to have_received(:drop_aggregate).with(:test)
     end
   end
 
-  describe "#update_function" do
-    it "updates the function" do
+  describe "#update_aggregate" do
+    it "updates the aggregate" do
       database = stubbed_database
       definition = stubbed_definition
 
-      connection.update_function(:test, version: 3)
+      connection.update_aggregate(:test, version: 3)
 
-      expect(database).to have_received(:update_function).
+      expect(database).to have_received(:update_aggregate).
         with(:test, definition.to_sql)
       expect(Fx::Definition).to have_received(:new).
-        with(name: :test, version: 3)
+        with(name: :test, version: 3, type: "aggregate")
     end
 
-    it "updates a function from a text definition" do
+    it "updates a aggregate from a text definition" do
       database = stubbed_database
 
-      connection.update_function(:test, sql_definition: "a definition")
+      connection.update_aggregate(:test, sql_definition: "a definition")
 
-      expect(database).to have_received(:update_function).with(
+      expect(database).to have_received(:update_aggregate).with(
         :test,
         "a definition",
       )
@@ -77,7 +77,7 @@ describe Fx::Statements::Function, :db do
 
     it "raises an error if not supplied a version" do
       expect {
-        connection.update_function(
+        connection.update_aggregate(
           :whatever,
           version: nil,
           sql_definition: nil,
